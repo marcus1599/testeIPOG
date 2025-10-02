@@ -1,34 +1,35 @@
-<div class="p-fluid p-formgrid p-grid">
-    <div class="p-field p-col-12">
+<form [formGroup]="form" class="form-tarefas">
+    <div class="form-group">
         <label for="nome">Nome*</label>
-        <input id="nome" type="text" pInputText formControlName="nome" />
+        <input id="nome" type="text" formControlName="nome" placeholder="Digite o nome da tarefa">
     </div>
 
-    <div class="p-field p-col-12">
+    <div class="form-group">
         <label for="descricao">Descrição</label>
-        <input id="descricao" type="text" pInputText formControlName="descricao" />
+        <input id="descricao" type="text" formControlName="descricao" placeholder="Descrição opcional">
     </div>
 
-    <div class="p-field p-col-6">
+    <div class="form-group half-width">
         <label for="prioridade">Prioridade*</label>
-        <p-select formControlName="prioridade" [options]="prioridades"></p-select>
+        <select id="prioridade" formControlName="prioridade">
+            <option *ngFor="let p of prioridades" [value]="p">{{ p }}</option>
+        </select>
     </div>
 
-    <div class="p-field p-col-6">
+    <div class="form-group half-width">
         <label for="situacao">Situação</label>
-        <input id="situacao" type="text" pInputText formControlName="situacao" formControlName="isDisabled" [disabled]="true" />
+        <input id="situacao" type="text" [value]="form.get('situacao')?.value" disabled>
     </div>
 
-    <div class="p-field p-col-6">
+    <div class="form-group half-width">
         <label for="dataPrevistaConclusao">Data Prevista*</label>
-        <p-datepicker formControlName="dataPrevistaConclusao" [minDate]="hoje"></p-datepicker>
+        <input id="dataPrevistaConclusao" type="date" formControlName="dataPrevistaConclusao"
+            [min]="hoje | date:'yyyy-MM-dd'">
     </div>
 
-    <div class="p-field p-col-12">
-        <button pButton type="button" label="Salvar" (click)="save()"></button>
-        <button pButton type="button" label="Cancelar" class="p-button-secondary"
-            (click)="router.navigate(['/tarefas'])"></button>
+    <div class="form-actions">
+        <button type="button" class="btn btn-primary" (click)="save()">Salvar</button>
+        <button type="button" class="btn btn-secondary" (click)="router.navigate(['/tarefas'])">Cancelar</button>
     </div>
-</div>
 
-<p-toast></p-toast>
+</form>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.Entities.Tarefa;
 import com.example.backend.Enums.Prioridade;
@@ -25,7 +26,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Controller
+@RestController
 @RequestMapping("/tarefas")
 
 @Tag(name = "Tarefas", description = "Gerenciamento de tarefas")

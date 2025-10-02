@@ -5,10 +5,13 @@ import { TarefaService } from '../../../core/services/tarefa.service';
 import { Tarefa, Prioridade, Situacao } from '../../../core/models/tarefa.model';
 import { SHARED_MODULES } from '../../../shared/shared';
 
+
+
 @Component({
   selector: 'app-list-tarefas',
   templateUrl: './list-tarefas.html',
   imports: [...SHARED_MODULES],
+  
   styleUrls: ['./list-tarefas.scss'],
   standalone: true
 })

@@ -25,6 +25,7 @@ import { MessageService } from 'primeng/api';
     SelectModule,
     ToastModule
   ],
+  styleUrls: ['./form-tarefas.scss'],
   templateUrl: './form-tarefas.html',
   providers: [MessageService]
 })

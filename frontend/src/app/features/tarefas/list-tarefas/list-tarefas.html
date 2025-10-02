@@ -2,43 +2,51 @@
 
     <h2>Lista de Tarefas</h2>
 
-    <form [formGroup]="filtroForm" class="filtros" style="margin-bottom:1rem; display:flex; gap:1rem;">
-        <input type="text" pInputText placeholder="Nome" formControlName="nomeFiltro">
-        <p-select formControlName="prioridade" [options]="prioridades"></p-select>
-        <p-select formControlName="situacao" [options]="situacoes"></p-select>
-        <button pButton label="Filtrar" (click)="carregarTarefas()" class="p-button-primary"></button>
-        <button pButton label="Limpar" (click)="limparFiltros()"></button>
+    <form [formGroup]="filtroForm" class="filtros">
+        <input type="text" placeholder="Nome" formControlName="nomeFiltro">
+
+        <select formControlName="prioridade">
+            <option value="">Todas Prioridades</option>
+            <option *ngFor="let p of prioridades" [value]="p">{{ p }}</option>
+        </select>
+
+        <select formControlName="situacao">
+            <option value="">Todas Situações</option>
+            <option *ngFor="let s of situacoes" [value]="s">{{ s }}</option>
+        </select>
+
+        <button type="button" class="btn btn-primary" (click)="carregarTarefas()">Filtrar</button>
+        <button type="button" class="btn btn-secondary" (click)="limparFiltros()">Limpar</button>
     </form>
 
-    <p-table [value]="tarefas" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
-        [responsiveLayout]="'scroll'">
-        <ng-template pTemplate="header">
+    <table>
+        <thead>
             <tr>
-                <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon></th>
-                <th pSortableColumn="prioridade">Prioridade <p-sortIcon field="prioridade"></p-sortIcon></th>
-                <th pSortableColumn="situacao">Situação <p-sortIcon field="situacao"></p-sortIcon></th>
+                <th>Nome</th>
+                <th>Prioridade</th>
+                <th>Situação</th>
                 <th>Ações</th>
             </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-tarefa>
-            <tr>
-                <td>{{tarefa.nome}}</td>
-                <td>{{tarefa.prioridade}}</td>
-                <td>{{tarefa.situacao}}</td>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tarefa of tarefas">
+                <td>{{ tarefa.nome }}</td>
+                <td>{{ tarefa.prioridade }}</td>
+                <td>{{ tarefa.situacao }}</td>
                 <td>
-                    <button pButton type="button" icon="pi pi-pencil" class="p-button-text"
-                        (click)="editar(tarefa)"></button>
-                    <button *ngIf="tarefa.situacao !== 'CONCLUIDA'" pButton type="button" icon="pi pi-check"
-                        class="p-button-success p-button-text" (click)="concluir(tarefa)"></button>
-                    <button *ngIf="tarefa.situacao !== 'PENDENTE'" pButton type="button" icon="pi pi-refresh"
-                        class="p-button-warning p-button-text" (click)="pendente(tarefa)"></button>
-                    <button pButton type="button" icon="pi pi-trash" class="p-button-danger p-button-text"
-                        (click)="excluir(tarefa)"></button>
+                    <button class="btn btn-edit" (click)="editar(tarefa)">✏️</button>
+                    <button *ngIf="tarefa.situacao !== 'CONCLUIDA'" class="btn btn-success"
+                        (click)="concluir(tarefa)">✔️</button>
+                    <button *ngIf="tarefa.situacao !== 'PENDENTE'" class="btn btn-warning"
+                        (click)="pendente(tarefa)">🔄</button>
+                    <button class="btn btn-danger" (click)="excluir(tarefa)">🗑️</button>
                 </td>
             </tr>
-        </ng-template>
-    </p-table>
+        </tbody>
+    </table>
+
+    <div class="pagination-info">
+        Total de tarefas: {{ totalRecords }}
+    </div>
 
 </div>
-
-<p-toast></p-toast>
