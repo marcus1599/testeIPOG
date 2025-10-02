@@ -14,7 +14,7 @@ import com.example.backend.Entities.Tarefa;
 import com.example.backend.Enums.Prioridade;
 import com.example.backend.Enums.Situacao;
 import com.example.backend.Repositories.TarefaRepository;
-import com.example.backend.Services.TarefaService;
+import com.example.backend.services.TarefaService;
 
 @SpringBootTest
 class TarefaServiceTest {
