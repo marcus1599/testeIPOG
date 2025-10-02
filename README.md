@@ -64,11 +64,10 @@ Estrutura modular com Angular Standalone Components
 SCSS básico aplicado para aparência consistente
 
 ⚠️ Bugs / Pendências Conhecidas
-PrimeNG temporariamente removido do front-end por problemas de importação
+PrimeNG temporariamente removido do front-end por problemas de importação.
 
-Backend retorna erro 500 ao criar tarefas devido ao cursor de paginação
+Backend retorna erro 500 ao criar tarefas devido a atualização no cursor de paginação, tentei deixar de forma mais prática para o angular e acabei quebrando o backend. não tive tempo de resolver.
 
 Melhorias de UI/UX ainda necessárias
 
-Autenticação ainda não implementada
-```
+
