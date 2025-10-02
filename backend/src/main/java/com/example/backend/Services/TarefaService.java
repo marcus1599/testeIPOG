@@ -15,6 +15,7 @@ import com.example.backend.Entities.Tarefa;
 import com.example.backend.Enums.Prioridade;
 import com.example.backend.Enums.Situacao;
 import com.example.backend.Repositories.TarefaRepository;
+import com.example.backend.dto.TarefaPageDTO;
 
 @Service
 public class TarefaService {
@@ -22,9 +23,14 @@ public class TarefaService {
     @Autowired
     private TarefaRepository repository;
 
-    public List<Tarefa> listarComCursor(Long cursor, int limit, String nome, Prioridade prioridade, Situacao situacao) {
+    public TarefaPageDTO listarComCursor(Long cursor, int limit, String nome, Prioridade prioridade,
+            Situacao situacao) {
         Pageable pageable = PageRequest.of(0, limit, Sort.by("id").ascending());
-        return repository.findNextPage(cursor, nome, prioridade, situacao, pageable);
+
+        List<Tarefa> tarefas = repository.findNextPage(cursor, nome, prioridade, situacao, pageable);
+        long totalElements = repository.countByFilters(nome, prioridade, situacao);
+
+        return new TarefaPageDTO(tarefas, totalElements);
     }
 
     public Tarefa salvar(Tarefa tarefa) {

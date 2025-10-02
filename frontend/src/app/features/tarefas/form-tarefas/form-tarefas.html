@@ -1,0 +1,34 @@
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12">
+        <label for="nome">Nome*</label>
+        <input id="nome" type="text" pInputText formControlName="nome" />
+    </div>
+
+    <div class="p-field p-col-12">
+        <label for="descricao">Descrição</label>
+        <input id="descricao" type="text" pInputText formControlName="descricao" />
+    </div>
+
+    <div class="p-field p-col-6">
+        <label for="prioridade">Prioridade*</label>
+        <p-select formControlName="prioridade" [options]="prioridades"></p-select>
+    </div>
+
+    <div class="p-field p-col-6">
+        <label for="situacao">Situação</label>
+        <input id="situacao" type="text" pInputText formControlName="situacao" formControlName="isDisabled" [disabled]="true" />
+    </div>
+
+    <div class="p-field p-col-6">
+        <label for="dataPrevistaConclusao">Data Prevista*</label>
+        <p-datepicker formControlName="dataPrevistaConclusao" [minDate]="hoje"></p-datepicker>
+    </div>
+
+    <div class="p-field p-col-12">
+        <button pButton type="button" label="Salvar" (click)="save()"></button>
+        <button pButton type="button" label="Cancelar" class="p-button-secondary"
+            (click)="router.navigate(['/tarefas'])"></button>
+    </div>
+</div>
+
+<p-toast></p-toast>

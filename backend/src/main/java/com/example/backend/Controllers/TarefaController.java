@@ -1,58 +1,54 @@
 package com.example.backend.Controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.backend.services.TarefaService;
-import com.example.backend.dto.TarefaMapper;
-import com.example.backend.dto.TarefaRequestDTO;
-import com.example.backend.dto.TarefaResponseDTO;
 import com.example.backend.Entities.Tarefa;
 import com.example.backend.Enums.Prioridade;
 import com.example.backend.Enums.Situacao;
-import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.example.backend.dto.TarefaMapper;
+import com.example.backend.dto.TarefaPageResponseDTO;
+import com.example.backend.dto.TarefaRequestDTO;
+import com.example.backend.dto.TarefaResponseDTO;
+import com.example.backend.services.TarefaService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
-import java.util.stream.Collectors;
-
-@RestController
+@Controller
 @RequestMapping("/tarefas")
-@RequiredArgsConstructor
+
 @Tag(name = "Tarefas", description = "Gerenciamento de tarefas")
 public class TarefaController {
 
-    private final TarefaService service;
+    @Autowired
+    private TarefaService service;
 
     @Operation(summary = "Listar tarefas com paginação por cursor e filtros")
     @GetMapping
-    public List<TarefaResponseDTO> listar(
+    public TarefaPageResponseDTO listar(
             @Parameter(description = "ID da última tarefa carregada (cursor)") @RequestParam(required = false) Long cursor,
-
             @Parameter(description = "Quantidade máxima de registros por página") @RequestParam(defaultValue = "10") int limit,
-
             @Parameter(description = "Filtro por nome (contém)") @RequestParam(required = false) String nome,
-
             @Parameter(description = "Filtro por prioridade (BAIXA, MEDIA, ALTA)") @RequestParam(required = false) Prioridade prioridade,
-
             @Parameter(description = "Filtro por situação (ABERTA, PENDENTE, CONCLUIDA)") @RequestParam(required = false) Situacao situacao) {
-        return service.listarComCursor(cursor, limit, nome, prioridade, situacao)
-                .stream()
-                .map(TarefaMapper::toDTO)
-                .collect(Collectors.toList());
+
+        var pageDTO = service.listarComCursor(cursor, limit, nome, prioridade, situacao);
+
+        // Converter para DTO de resposta
+        return new TarefaPageResponseDTO(
+                pageDTO.content().stream().map(TarefaMapper::toDTO).toList(),
+                pageDTO.totalElements());
     }
 
     @Operation(summary = "Criar nova tarefa")

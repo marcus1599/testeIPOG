@@ -13,16 +13,24 @@ import java.util.List;
 
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
-    @Query("SELECT t FROM Tarefa t " +
-            "WHERE (:cursor IS NULL OR t.id > :cursor) " +
-            "AND (:nome IS NULL OR LOWER(t.nome) LIKE LOWER(CONCAT('%', :nome, '%'))) " +
-            "AND (:prioridade IS NULL OR t.prioridade = :prioridade) " +
-            "AND (:situacao IS NULL OR t.situacao = :situacao) " +
-            "ORDER BY t.id ASC")
-    List<Tarefa> findNextPage(
-            @Param("cursor") Long cursor,
-            @Param("nome") String nome,
-            @Param("prioridade") Prioridade prioridade,
-            @Param("situacao") Situacao situacao,
-            Pageable pageable);
+        @Query("SELECT t FROM Tarefa t " +
+                        "WHERE (:cursor IS NULL OR t.id > :cursor) " +
+                        "AND (:nome IS NULL OR LOWER(t.nome) LIKE LOWER(CONCAT('%', :nome, '%'))) " +
+                        "AND (:prioridade IS NULL OR t.prioridade = :prioridade) " +
+                        "AND (:situacao IS NULL OR t.situacao = :situacao) " +
+                        "ORDER BY t.id ASC")
+        List<Tarefa> findNextPage(
+                        @Param("cursor") Long cursor,
+                        @Param("nome") String nome,
+                        @Param("prioridade") Prioridade prioridade,
+                        @Param("situacao") Situacao situacao,
+                        Pageable pageable);
+
+        @Query("""
+                            SELECT COUNT(t) FROM Tarefa t
+                            WHERE (:nome IS NULL OR LOWER(t.nome) LIKE LOWER(CONCAT('%', :nome, '%')))
+                              AND (:prioridade IS NULL OR t.prioridade = :prioridade)
+                              AND (:situacao IS NULL OR t.situacao = :situacao)
+                        """)
+        long countByFilters(String nome, Prioridade prioridade, Situacao situacao);
 }
